@@ -2,8 +2,8 @@
 #include "RenderSystem.h"
 #include <time.h>
 
-
-RenderSystem::RenderSystem(void) : _stop(false)
+RenderSystem::RenderSystem(void) : _stop(false),
+	_bColor(BACK_BLUE)
 {
 	// Get the size of the standard console window
 	CONSOLE_SCREEN_BUFFER_INFO csbi;
@@ -19,7 +19,7 @@ RenderSystem::RenderSystem(void) : _stop(false)
 
 RenderSystem::~RenderSystem(void)
 {
-
+	free(this->buffer);
 }
 
 void RenderSystem::SetDisplayCallback(boost::function<void ()> function)
@@ -42,11 +42,18 @@ void RenderSystem::_renderFunction()
 		// Fill with stars
 		for (int y = 0; y < rows ; ++y) {
 			for (int x = 0; x < columns; ++x) {
-				buffer[x+columns*y].Char.AsciiChar = '*';
-				buffer[x+columns*y].Attributes = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | 0x0010 | 0x0080;
+				buffer[x+columns*y].Char.AsciiChar = ' ';
+				buffer[x+columns*y].Attributes = this->_bColor | WHITE;
 			   }	
 		}
 
+		std::vector<glm::vec4> vertices = _processMesh();
+
+		for(std::vector<glm::vec4>::size_type i = 0; i != vertices.size(); i++)
+		{
+			buffer[(int)(vertices[i].y * columns + vertices[i].x)].Char.AsciiChar = '*';
+		}
+		
 		if(!_displayCallback.empty())
 		{
 			_displayCallback();
@@ -66,4 +73,22 @@ void RenderSystem::_renderFunction()
 void RenderSystem::StopRender()
 {
 	_stop = false;
+}
+
+void RenderSystem::SetRenderList(std::vector<Mesh*> const &meshList)
+{
+	_renderList = meshList;
+}
+
+std::vector<glm::vec4> RenderSystem::_processMesh()
+{
+	std::vector<glm::vec4> returnVector;
+	
+	for(std::vector<Mesh*>::size_type i = 0; i != _renderList.size(); i++)
+	{
+		std::vector<glm::vec4> temp = _renderList[i]->GetProjectedVertices();
+		returnVector.insert(returnVector.end(), temp.begin(), temp.end());	
+	}
+
+	return returnVector;
 }

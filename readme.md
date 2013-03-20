@@ -13,4 +13,4 @@ Prerequisites
 =============
 
 * Boost 1.53
-
+* glm-0.9.4.2
