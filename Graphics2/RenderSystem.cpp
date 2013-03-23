@@ -118,7 +118,7 @@ std::vector<glm::vec4> RenderSystem::_connectVertex(glm::vec4 point1, glm::vec4 
 	float deltaError = 0;
 	if(!deltax == 0) 
 	{ 	
-		deltaError = (float) abs(deltay/deltax);
+		deltaError = (float) abs((float)deltay/deltax);
 	}
 
 	int y = (int) point1.y;

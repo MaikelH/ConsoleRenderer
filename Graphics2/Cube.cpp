@@ -6,8 +6,8 @@ Cube::Cube(void)
 {
 	// Added vertex to list
 	this->_vertexList.push_back( glm::vec4(0,0,0,1));
-	this->_vertexList.push_back( glm::vec4(10,0,0,1));
-	this->_vertexList.push_back( glm::vec4(10,10,0,1));
+	this->_vertexList.push_back( glm::vec4(10,2,0,1));
+	this->_vertexList.push_back( glm::vec4(10,12,0,1));
 	this->_vertexList.push_back( glm::vec4(0,10,0,1));
 
 	// Set index to draw lines

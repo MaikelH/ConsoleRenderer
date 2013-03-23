@@ -23,14 +23,13 @@ int _tmain(int argc, _TCHAR* argv[])
 	InitResources();
 	renderer->SetRenderList(_meshList);
 	renderer->StartRender();
-	
 
 	return 0;
 }
 
 void displayCallback()
 {
-	_meshList[0]->setWorldCoordinate(_meshList[0]->getWorldCoordinate() + glm::vec3(0.01,0,0));
+	_meshList[0]->setWorldCoordinate(_meshList[0]->getWorldCoordinate());
 }
 
 void InitResources()
