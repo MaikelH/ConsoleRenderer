@@ -105,33 +105,50 @@ std::vector<glm::vec4> RenderSystem::_connectVertex(glm::vec4 point1, glm::vec4 
 {
 	// Implementation of simple bresenham algorithm
 	std::vector<glm::vec4> coords;
+	
+	// Swap points so that we can draw from the left through right
 	if(point2.x < point1.x)
+	{
+		glm::vec4 tempPoint = point1;	
+		point1 = point2;
+		point2 = tempPoint;
+	}
+	if(point2.y < point1.y)
 	{
 		glm::vec4 tempPoint = point1;
 		point1 = point2;
 		point2 = tempPoint;
 	}
+
 	int deltax = (int) (point2.x - point1.x);
 	int deltay = (int) (point2.y - point1.y);
 
-	float error = 0;
-	float deltaError = 0;
-	if(!deltax == 0) 
-	{ 	
-		deltaError = (float) abs((float)deltay/deltax);
-	}
-
-	int y = (int) point1.y;
-
-	for(int x = (int)point1.x; x <= point2.x; x++)
+	// If deltax = 0 -> vertical line
+	if(deltax == 0)
 	{
-		coords.push_back(glm::vec4(x, y, 0, 1));
-
-		error += deltaError;
-		if(error >= 0.5) 
+		for(int y = point1.y; y <= point2.y; y++)
 		{
-			y += 1;
-			error -= 1.0;
+			coords.push_back(glm::vec4(point1.x,y,0,1));
+		}
+	}
+	else
+	{
+		float error = 0;
+		float deltaError = 0;
+		deltaError = (float) abs((float)deltay/deltax);
+
+		int y = (int) point1.y;
+
+		for(int x = (int)point1.x; x <= point2.x; x++)
+		{
+			coords.push_back(glm::vec4(x, y, 0, 1));
+
+			error += deltaError;
+			if(error >= 0.5) 
+			{
+				y += 1;
+				error -= 1.0;
+			}
 		}
 	}
 
