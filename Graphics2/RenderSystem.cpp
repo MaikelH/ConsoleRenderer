@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "RenderSystem.h"
 #include <time.h>
+#include <boost\tuple\tuple.hpp>
 
 RenderSystem::RenderSystem(void) : _stop(false),
 	_bColor(BACK_BLUE)
@@ -47,7 +48,7 @@ void RenderSystem::_renderFunction()
 			   }	
 		}
 
-		std::vector<glm::vec4> vertices = _processMesh();
+		std::vector<glm::vec4> vertices = _processMeshes();
 
 		for(std::vector<glm::vec4>::size_type i = 0; i != vertices.size(); i++)
 		{
@@ -80,15 +81,59 @@ void RenderSystem::SetRenderList(std::vector<Mesh*> const &meshList)
 	_renderList = meshList;
 }
 
-std::vector<glm::vec4> RenderSystem::_processMesh()
+std::vector<glm::vec4> RenderSystem::_processMeshes()
 {
 	std::vector<glm::vec4> returnVector;
 	
 	for(std::vector<Mesh*>::size_type i = 0; i != _renderList.size(); i++)
 	{
 		std::vector<glm::vec4> temp = _renderList[i]->GetProjectedVertices();
-		returnVector.insert(returnVector.end(), temp.begin(), temp.end());	
+		Mesh::IndexList indexes = _renderList[i]->GetIndexList();
+
+		// Process all the different line segments
+		for(Mesh::IndexList::size_type i = 0; i != indexes.size(); i++)
+		{
+			std::vector<glm::vec4> pixels = _connectVertex(temp[boost::get<0>(indexes[i])], temp[boost::get<1>(indexes[i])]);
+			returnVector.insert(returnVector.end(), pixels.begin(), pixels.end());
+		}
 	}
 
 	return returnVector;
+}
+
+std::vector<glm::vec4> RenderSystem::_connectVertex(glm::vec4 point1, glm::vec4 point2)
+{
+	// Implementation of simple bresenham algorithm
+	std::vector<glm::vec4> coords;
+	if(point2.x < point1.x)
+	{
+		glm::vec4 tempPoint = point1;
+		point1 = point2;
+		point2 = tempPoint;
+	}
+	int deltax = (int) (point2.x - point1.x);
+	int deltay = (int) (point2.y - point1.y);
+
+	float error = 0;
+	float deltaError = 0;
+	if(!deltax == 0) 
+	{ 	
+		deltaError = (float) abs(deltay/deltax);
+	}
+
+	int y = (int) point1.y;
+
+	for(int x = (int)point1.x; x <= point2.x; x++)
+	{
+		coords.push_back(glm::vec4(x, y, 0, 1));
+
+		error += deltaError;
+		if(error >= 0.5) 
+		{
+			y += 1;
+			error -= 1.0;
+		}
+	}
+
+	return coords;
 }

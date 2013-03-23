@@ -34,3 +34,8 @@ std::vector<glm::vec4> Mesh::GetProjectedVertices()
 
 	return returnVector;
 }
+
+std::vector<boost::tuple<int, int> > Mesh::GetIndexList()
+{
+	return _indexList;
+}

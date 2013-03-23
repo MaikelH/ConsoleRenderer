@@ -7,16 +7,19 @@
 class Mesh
 {
 public:
+	typedef std::vector<boost::tuple<int, int> > IndexList;
+
 	Mesh(void);
 	~Mesh(void);
 
 	glm::vec3 getWorldCoordinate();
 	void setWorldCoordinate(glm::vec3 vector);
 	std::vector<glm::vec4> GetProjectedVertices();
+	IndexList GetIndexList();
 
 protected:
 	std::vector<glm::vec4> _vertexList;
-	std::vector<boost::tuple<int, int> > _indexList;
+	IndexList _indexList;
 
 	glm::vec3 _worldCoordinate;
 	glm::mat4 _transLateMatrix;

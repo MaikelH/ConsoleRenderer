@@ -30,7 +30,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 void displayCallback()
 {
-	_meshList[0]->setWorldCoordinate(_meshList[0]->getWorldCoordinate() + glm::vec3(0,0,0));
+	_meshList[0]->setWorldCoordinate(_meshList[0]->getWorldCoordinate() + glm::vec3(0.01,0,0));
 }
 
 void InitResources()

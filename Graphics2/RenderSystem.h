@@ -40,6 +40,7 @@ private:
 	std::vector<Mesh*> _renderList;
 
 	void _renderFunction();
-	std::vector<glm::vec4> _processMesh();
+	std::vector<glm::vec4> _processMeshes();
+	std::vector<glm::vec4> _connectVertex(glm::vec4 point1, glm::vec4 point2);
 };
 
