@@ -27,7 +27,7 @@ std::vector<glm::vec4> Mesh::GetProjectedVertices()
 {
 	std::vector<glm::vec4> returnVector;
 	
-	for(std::vector<glm::vec4>::size_type i = 0; i != _vertexList.size(); i++)
+		for(std::vector<glm::vec4>::size_type i = 0; i != _vertexList.size(); i++)
 	{
 		returnVector.push_back(_transLateMatrix * _vertexList[i]);	
 	}
@@ -38,4 +38,9 @@ std::vector<glm::vec4> Mesh::GetProjectedVertices()
 std::vector<boost::tuple<int, int> > Mesh::GetIndexList()
 {
 	return _indexList;
+}
+
+void Mesh::Rotate(float angle, const glm::vec3& axis)
+{
+	_transLateMatrix = glm::rotate(_transLateMatrix, angle, axis);
 }

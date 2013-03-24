@@ -16,6 +16,7 @@ public:
 	void setWorldCoordinate(glm::vec3 vector);
 	std::vector<glm::vec4> GetProjectedVertices();
 	IndexList GetIndexList();
+	void Rotate(float angle, const glm::vec3& axis);
 
 protected:
 	std::vector<glm::vec4> _vertexList;
