@@ -85,12 +85,14 @@ std::vector<glm::vec4> RenderSystem::_processMeshes()
 {
 	std::vector<glm::vec4> returnVector;
 	
+	// Loop through all the meshes in the renderlist
 	for(std::vector<Mesh*>::size_type i = 0; i != _renderList.size(); i++)
 	{
+		// Retrieve vertexes and index numbers for every mesh
 		std::vector<glm::vec4> temp = _renderList[i]->GetProjectedVertices();
 		Mesh::IndexList indexes = _renderList[i]->GetIndexList();
 
-		// Process all the different line segments
+		// Process all the different line segments and connect them together
 		for(Mesh::IndexList::size_type i = 0; i != indexes.size(); i++)
 		{
 			std::vector<glm::vec4> pixels = _connectVertex(temp[boost::get<0>(indexes[i])], temp[boost::get<1>(indexes[i])]);
