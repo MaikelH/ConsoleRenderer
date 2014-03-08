@@ -38,7 +38,7 @@ void displayCallback()
 
 	double angle = 1.0 * duration;
 
-	//_meshList[0]->Rotate( 0.5 , glm::vec3(1,0,0));
+	_meshList[0]->Rotate( 0.5 , glm::vec3(0,1,0));
 	
 	endTime = clock();
 	boost::this_thread::sleep(boost::posix_time::milliseconds(10));

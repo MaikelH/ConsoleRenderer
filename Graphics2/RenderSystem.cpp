@@ -38,9 +38,10 @@ void RenderSystem::_renderFunction()
 {
 	while(!_stop)
 	{
+		// Create new empty buffer;
 		this->buffer = new CHAR_INFO[rows * columns];
 		
-		// Fill with stars
+		// Create Background
 		for (int y = 0; y < rows ; ++y) {
 			for (int x = 0; x < columns; ++x) {
 				buffer[x+columns*y].Char.AsciiChar = ' ';
@@ -48,23 +49,26 @@ void RenderSystem::_renderFunction()
 			   }	
 		}
 
+		// Process everything that should be drawn at the screen
 		std::vector<glm::vec4> vertices = _processMeshes();
 
+		// Create all the lines on the display
 		for(std::vector<glm::vec4>::size_type i = 0; i != vertices.size(); i++)
 		{
 			buffer[(int)(vertices[i].y * columns + vertices[i].x)].Char.AsciiChar = '*';
 		}
 		
-		if(!_displayCallback.empty())
-		{
-			_displayCallback();
-		}
-
+		// Write to console buffer
 		COORD start = {0,0};
 		SMALL_RECT SBRegion = { 0, 0, columns, rows };
 		COORD size = { 80, 25 };
 		COORD startC = {0, 0};
 		WriteConsoleOutputA(_hOUT, buffer, size, startC, &SBRegion);
+		
+		if(!_displayCallback.empty())
+		{
+			_displayCallback();
+		}
 
 		// Clear the buffer
 		free(this->buffer);
@@ -103,6 +107,9 @@ std::vector<glm::vec4> RenderSystem::_processMeshes()
 	return returnVector;
 }
 
+/**
+  *
+  */
 std::vector<glm::vec4> RenderSystem::_connectVertex(glm::vec4 point1, glm::vec4 point2)
 {
 	// Implementation of simple bresenham algorithm
