@@ -15,11 +15,13 @@ public:
 	void Move(glm::vec3 vector);
 
 	glm::mat4 GetProjectionMatrix();
+	glm::mat4 GetViewMatrix();
 
 protected:
 	glm::vec3 _target;
 	glm::vec3 _position;
 
 	glm::mat4 _projectionMatrix;
+	glm::mat4 _viewMatrix;
 };
 

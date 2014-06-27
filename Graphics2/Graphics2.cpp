@@ -19,15 +19,21 @@ RenderSystem* renderer;
 std::vector<Mesh*> _meshList;
 bool startup = false;
 clock_t endTime;
+Camera* camera;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
 	renderer = new RenderSystem();
+	camera = new Camera();
+
 	renderer->SetDisplayCallback(&displayCallback);
+	renderer->SetCamera(camera);
 	InitResources();
 	renderer->SetRenderList(_meshList);
 	renderer->StartRender();
 
+
+	_meshList[0]->Rotate(45, glm::vec3(0, 0, 1));
 	return 0;
 }
 
@@ -47,5 +53,5 @@ void displayCallback()
 void InitResources()
 {
 	_meshList.push_back(new Cube());
-	_meshList[0]->setWorldCoordinate(glm::vec3(30,10,0));
+	_meshList[0]->setWorldCoordinate(glm::vec3(15,15,0));
 }

@@ -35,6 +35,21 @@ std::vector<glm::vec4> Mesh::GetProjectedVertices()
 	return returnVector;
 }
 
+std::vector<glm::vec4> Mesh::GetProjectedVertices(Camera* camera) 
+{
+	std::vector<glm::vec4> returnVector;
+	glm::mat4 _projectionMatrix = camera->GetProjectionMatrix();
+	glm::mat4 _viewMatrix = camera->GetViewMatrix();
+	
+	for(std::vector<glm::vec4>::size_type i = 0; i != _vertexList.size(); i++)
+	{
+		returnVector.push_back((_projectionMatrix * _viewMatrix * _transLateMatrix) * _vertexList[i]);	
+	}
+
+	return returnVector;
+}
+
+
 std::vector<boost::tuple<int, int> > Mesh::GetIndexList()
 {
 	return _indexList;

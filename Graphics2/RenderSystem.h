@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <vector>
 #include "Mesh.h"
+#include "Camera.h"
 
 enum ForegroundColor {
 	RED = FOREGROUND_RED,
@@ -28,6 +29,7 @@ public:
 	void SetDisplayCallback(boost::function<void ()> function);
 	void SetBackgroundColor(BackgroundColor color);
 	void SetRenderList(std::vector<Mesh*> const &meshList);
+	void SetCamera(Camera *camera);
 
 private:
 	boost::function<void ()> _displayCallback;
@@ -38,6 +40,7 @@ private:
 	HANDLE _hOUT;
 	BackgroundColor _bColor;
 	std::vector<Mesh*> _renderList;
+	Camera* _camera;
 
 	void _renderFunction();
 	std::vector<glm::vec4> _processMeshes();

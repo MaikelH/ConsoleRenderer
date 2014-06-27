@@ -93,7 +93,7 @@ std::vector<glm::vec4> RenderSystem::_processMeshes()
 	for(std::vector<Mesh*>::size_type i = 0; i != _renderList.size(); i++)
 	{
 		// Retrieve vertexes and index numbers for every mesh
-		std::vector<glm::vec4> temp = _renderList[i]->GetProjectedVertices();
+		std::vector<glm::vec4> temp = _renderList[i]->GetProjectedVertices(this->_camera );
 		Mesh::IndexList indexes = _renderList[i]->GetIndexList();
 
 		// Process all the different line segments and connect them together
@@ -162,4 +162,9 @@ std::vector<glm::vec4> RenderSystem::_connectVertex(glm::vec4 point1, glm::vec4 
 	}
 
 	return coords;
+}
+
+void RenderSystem::SetCamera(Camera *camera) 
+{
+	this->_camera = camera;
 }
